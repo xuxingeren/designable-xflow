@@ -43,7 +43,7 @@ const nodeList = (arr: any[]) => {
       label: s.label,
       id: s.id,
       attr: attr,
-      ...attr.canvasStyle,
+      ...attr.canvansStyle,
     };
   });
   return newArr;
