@@ -1,5 +1,5 @@
 import type { IAppLoad } from '@antv/xflow';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 /** 交互组件 */
 import {
   /** XFlow核心组件 */
@@ -8,8 +8,6 @@ import {
   FlowchartCanvas,
   /** 流程图配置扩展 */
   FlowchartExtension,
-  /** 流程图节点组件 */
-  FlowchartNodePanel,
   /** 流程图表单组件 */
   FlowchartFormPanel,
   /** 通用组件：快捷键 */
@@ -34,10 +32,13 @@ import { useMenuConfig } from './config-menu';
 import { useToolbarConfig } from './config-toolbar';
 /** 配置快捷键 */
 import { useKeybindingConfig } from './config-keybinding';
+/** 流程图节点组件 */
+import CustomNodeCollapsePanel from './CustomNodeCollapsePanel';
 /** 配置Dnd组件面板 */
 import '@antv/xflow/dist/index.css';
 import './index.less';
 import { PageContainer } from '@ant-design/pro-layout';
+import { useGraphConfig } from './CustomNodeCollapsePanel/config-dnd-panel';
 
 export interface IProps {
   meta: { flowId: string };
@@ -57,14 +58,16 @@ export const Demo: React.FC<IProps> = (props) => {
 
   const onLoad: IAppLoad = async (app) => {
     graphRef.current = await app.getGraphInstance();
+    graphBind();
   };
 
-  useEffect(() => {
+  const graphBind = useCallback(() => {
     if (graphRef.current) {
       graphRef.current.on('node:click', (...arg) => {
         console.log(arg);
       });
     }
+    console.log(graphRef);
   }, [graphRef]);
 
   return (
@@ -76,16 +79,17 @@ export const Demo: React.FC<IProps> = (props) => {
         meta={meta}
       >
         <FlowchartExtension />
-        <FlowchartNodePanel
-          position={{ width: 162, top: 40, bottom: 0, left: 0 }}
-        />
+        <CustomNodeCollapsePanel />
         <CanvasToolbar
           className="xflow-workspace-toolbar-top"
           layout="horizontal"
           config={toolbarConfig}
           position={{ top: 0, left: 0, right: 0, bottom: 0 }}
         />
-        <FlowchartCanvas position={{ top: 40, left: 0, right: 0, bottom: 0 }}>
+        <FlowchartCanvas
+          useConfig={useGraphConfig}
+          position={{ top: 40, left: 0, right: 0, bottom: 0 }}
+        >
           <CanvasScaleToolbar
             layout="horizontal"
             position={{ top: -40, right: 0 }}
