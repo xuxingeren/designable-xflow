@@ -15,17 +15,14 @@ const getAnchorStyle = (position: string) => {
         },
       },
     },
-    'z-index': 10,
+    zIndex: 10,
   };
 };
 
 const getPorts = (position = ['top', 'right', 'bottom', 'left']) => {
   return {
     items: position.map((name) => {
-      return {
-        group: name,
-        id: uuidv4(),
-      };
+      return { group: name, id: uuidv4() };
     }),
     groups: {
       top: getAnchorStyle('top'),
@@ -36,4 +33,4 @@ const getPorts = (position = ['top', 'right', 'bottom', 'left']) => {
   };
 };
 
-export { getPorts };
+export default getPorts;

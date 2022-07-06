@@ -209,6 +209,7 @@ namespace NSToolbarConfig {
           {
             saveGraphDataService: (meta, graphData) => {
               console.log(graphData);
+              localStorage.setItem('graphData', JSON.stringify(graphData));
               return null;
             },
           },

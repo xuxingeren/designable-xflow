@@ -1,7 +1,8 @@
-import type { IAppLoad } from '@antv/xflow';
+import { IAppLoad, NsGraphCmd, XFlowGraphCommands } from '@antv/xflow';
 import React, { useRef, useEffect, useCallback } from 'react';
 /** 交互组件 */
 import {
+  NsGraph,
   /** XFlow核心组件 */
   XFlow,
   /** 流程图画布组件 */
@@ -58,6 +59,22 @@ export const Demo: React.FC<IProps> = (props) => {
 
   const onLoad: IAppLoad = async (app) => {
     graphRef.current = await app.getGraphInstance();
+    const graphData: NsGraph.IGraphData = JSON.parse(
+      localStorage.getItem('graphData')!,
+    ) || { nodes: [], edges: [] };
+    await app.executeCommand<NsGraphCmd.GraphRender.IArgs>(
+      XFlowGraphCommands.GRAPH_RENDER.id,
+      {
+        graphData: graphData,
+      },
+    );
+    // 居中
+    await app.executeCommand<NsGraphCmd.GraphZoom.IArgs>(
+      XFlowGraphCommands.GRAPH_ZOOM.id,
+      {
+        factor: 'real',
+      },
+    );
     graphBind();
   };
 

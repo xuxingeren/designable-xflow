@@ -4,11 +4,9 @@ import {
   uuidv4,
   XFlowNodeCommands,
   IFlowchartGraphProps,
-  NsGraph,
 } from '@antv/xflow';
-import { PropsWithChildren } from 'react';
 import Nodes from './Nodes';
-import { getPorts } from './ports';
+import getPorts from './ports';
 
 export const onNodeDrop: NsNodeCollapsePanel.IOnNodeDrop = async (
   nodeConfig,
@@ -24,12 +22,13 @@ export const onNodeDrop: NsNodeCollapsePanel.IOnNodeDrop = async (
 };
 
 const renderNode = (
-  props:
-    | JSX.IntrinsicAttributes
-    | PropsWithChildren<NsGraph.IReactNodeProps<any>>,
+  props: {
+    data: NsNodeCollapsePanel.IPanelNode;
+    isNodePanel: boolean;
+  },
   style: { width: number; height: number },
 ) => {
-  const Node = Nodes[props.data.renderKey];
+  const Node = Nodes[props.data.renderKey!];
   return Node ? <Node {...props} style={style} /> : null;
 };
 
@@ -68,6 +67,21 @@ export const nodeDataService: NsNodeCollapsePanel.INodeDataService =
           },
         },
       },
+      {
+        id: 2,
+        renderKey: 'CustomConnecto',
+        label: '审核节点',
+        attr: {
+          style: {
+            width: 80,
+            height: 80,
+          },
+          canvansStyle: {
+            width: 80,
+            height: 80,
+          },
+        },
+      },
     ];
     return [
       {
@@ -79,10 +93,9 @@ export const nodeDataService: NsNodeCollapsePanel.INodeDataService =
   };
 
 export const useGraphConfig: IFlowchartGraphProps['useConfig'] = (config) => {
-  console.log(config, Nodes);
   Object.keys(Nodes).map((key) => {
     config.setNodeRender(key, (props) => {
-      return renderNode(props, props.size);
+      return renderNode({ data: props.data, isNodePanel: false }, props.size);
     });
   });
   // config.setDefaultNodeRender((props) => {

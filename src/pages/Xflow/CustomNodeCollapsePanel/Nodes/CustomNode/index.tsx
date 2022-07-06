@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import type { NsNodeCollapsePanel } from '@antv/xflow';
+import styles from './index.less';
 
 interface CustomNodeProps {
   data: NsNodeCollapsePanel.IPanelNode;
@@ -8,7 +9,14 @@ interface CustomNodeProps {
 }
 
 const CustomNode: FC<CustomNodeProps> = ({ data, style, isNodePanel }) => {
-  return <div style={style}>{data.label}</div>;
+  return (
+    <div
+      style={style}
+      className={`${styles.customNode} ${isNodePanel ? 'isNodePanel' : ''}`}
+    >
+      {data.label}
+    </div>
+  );
 };
 
 export default CustomNode;
