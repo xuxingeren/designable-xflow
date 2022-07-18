@@ -31,8 +31,8 @@ export namespace TOOLBAR_ITEMS {
   export const BACK_NODE = XFlowNodeCommands.BACK_NODE.id;
   export const FRONT_NODE = XFlowNodeCommands.FRONT_NODE.id;
   export const SAVE_GRAPH_DATA = XFlowGraphCommands.SAVE_GRAPH_DATA.id;
-  export const REDO_CMD = `${XFlowGraphCommands.REDO_CMD.id}`;
-  export const UNDO_CMD = `${XFlowGraphCommands.UNDO_CMD.id}`;
+  export const GRAPH_HISTORY_REDO = `${XFlowGraphCommands.GRAPH_HISTORY_REDO.id}`;
+  export const GRAPH_HISTORY_UNDO = `${XFlowGraphCommands.GRAPH_HISTORY_UNDO.id}`;
   export const MULTI_SELECT = `${XFlowGraphCommands.GRAPH_TOGGLE_MULTI_SELECT.id}`;
   export const ADD_GROUP = `${XFlowGroupCommands.ADD_GROUP.id}`;
   export const DEL_GROUP = `${XFlowGroupCommands.DEL_GROUP.id}`;
@@ -54,6 +54,8 @@ namespace NSToolbarConfig {
     return [
       await MODELS.SELECTED_NODES.getModel(modelService),
       await MODELS.GRAPH_ENABLE_MULTI_SELECT.getModel(modelService),
+      await MODELS.HISTORY_REDOABLE.getModel(modelService),
+      await MODELS.HISTORY_UNDOABLE.getModel(modelService),
     ];
   };
 
@@ -70,8 +72,8 @@ namespace NSToolbarConfig {
     const isNormalNodesSelected =
       await MODELS.IS_NORMAL_NODES_SELECTED.useValue(modelService);
     // undo redo
-    const isUndoable = await MODELS.COMMAND_UNDOABLE.useValue(modelService);
-    const isRedoable = await MODELS.COMMAND_REDOABLE.useValue(modelService);
+    const isUndoable = await MODELS.HISTORY_REDOABLE.useValue(modelService);
+    const isRedoable = await MODELS.HISTORY_UNDOABLE.useValue(modelService);
 
     return {
       isUndoable,
@@ -84,29 +86,34 @@ namespace NSToolbarConfig {
 
   export const getToolbarItems = async (state: IToolbarState) => {
     const toolbarGroup: IToolbarItemOptions[] = [];
-    // const history = getGraphHistory()
 
     // /** 撤销 */
     // toolbarGroup.push({
     //   tooltip: '撤销',
     //   iconName: 'UndoOutlined',
-    //   id: TOOLBAR_ITEMS.UNDO_CMD,
-    //   isEnabled: history.canUndo(),
-    //   onClick: async () => {
-    //     history.undo()
+    //   id: TOOLBAR_ITEMS.GRAPH_HISTORY_UNDO,
+    //   isEnabled: state.isUndoable,
+    //   onClick: async ({ commandService }) => {
+    //     commandService.executeCommand<NsGraphCmd.GraphHistoryUndo.IArgs>(
+    //       TOOLBAR_ITEMS.GRAPH_HISTORY_UNDO,
+    //       {},
+    //     );
     //   },
-    // })
+    // });
 
     // /** 重做 */
     // toolbarGroup.push({
     //   tooltip: '重做',
     //   iconName: 'RedoOutlined',
-    //   id: TOOLBAR_ITEMS.REDO_CMD,
-    //   isEnabled: history.canRedo(),
-    //   onClick: async () => {
-    //     history.redo()
+    //   id: TOOLBAR_ITEMS.GRAPH_HISTORY_REDO,
+    //   isEnabled: state.isRedoable,
+    //   onClick: async ({ commandService }) => {
+    //     commandService.executeCommand<NsGraphCmd.GraphHistoryRedo.IArgs>(
+    //       TOOLBAR_ITEMS.GRAPH_HISTORY_REDO,
+    //       {},
+    //     );
     //   },
-    // })
+    // });
 
     /** FRONT_NODE */
     toolbarGroup.push({

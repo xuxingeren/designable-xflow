@@ -9,8 +9,6 @@ import {
   FlowchartCanvas,
   /** 流程图配置扩展 */
   FlowchartExtension,
-  /** 流程图表单组件 */
-  FlowchartFormPanel,
   /** 通用组件：快捷键 */
   KeyBindings,
   /** 通用组件：画布缩放 */
@@ -35,6 +33,8 @@ import { useToolbarConfig } from './config-toolbar';
 import { useKeybindingConfig } from './config-keybinding';
 /** 流程图节点组件 */
 import CustomNodeCollapsePanel from './CustomNodeCollapsePanel';
+/** 流程图表单组件 */
+import CustomFlowchartFormPanel from './CustomFlowchartFormPanel';
 /** 配置Dnd组件面板 */
 import '@antv/xflow/dist/index.css';
 import './index.less';
@@ -120,10 +120,7 @@ export const Demo: React.FC<IProps> = (props) => {
           <CanvasSnapline color="#faad14" />
           <CanvasNodePortTooltip />
         </FlowchartCanvas>
-        <FlowchartFormPanel
-          show={true}
-          position={{ width: 200, top: 40, bottom: 0, right: 0 }}
-        />
+        <CustomFlowchartFormPanel />
         <KeyBindings config={keybindingConfig} />
       </XFlow>
     </PageContainer>

@@ -19,5 +19,5 @@ files.keys().forEach(async (key) => {
   const module = isPromise(files(key)) ? await files(key) : files(key);
   modules[moduleName] = module.default;
 });
-
+console.log(modules, 9999);
 export default modules;

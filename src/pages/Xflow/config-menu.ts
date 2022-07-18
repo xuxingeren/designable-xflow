@@ -10,7 +10,6 @@ import type {
 import { createCtxMenuConfig, MenuItemType } from '@antv/xflow';
 import { IconStore, XFlowNodeCommands, XFlowEdgeCommands } from '@antv/xflow';
 import { DeleteOutlined, EditOutlined, StopOutlined } from '@ant-design/icons';
-import { MockApi } from './service';
 
 import type { IGraphCommand } from '@antv/xflow';
 

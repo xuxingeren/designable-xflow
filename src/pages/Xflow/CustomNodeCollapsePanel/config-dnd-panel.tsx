@@ -57,6 +57,10 @@ export const nodeDataService: NsNodeCollapsePanel.INodeDataService =
         renderKey: 'CustomNode',
         label: '开始',
         attr: {
+          attribute: {
+            type: 'aaa',
+            tag: [1, 2],
+          },
           style: {
             width: 280,
             height: 40,
@@ -72,6 +76,10 @@ export const nodeDataService: NsNodeCollapsePanel.INodeDataService =
         renderKey: 'CustomConnecto',
         label: '审核节点',
         attr: {
+          attribute: {
+            type: 'bbb',
+            tag: [2],
+          },
           style: {
             width: 80,
             height: 80,
