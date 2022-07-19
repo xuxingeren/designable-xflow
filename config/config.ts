@@ -17,6 +17,6 @@ export default defineConfig({
       component: '@/pages/Xflow',
     },
   ],
-  mfsu: {},
+  // mfsu: {},
   fastRefresh: {},
 });

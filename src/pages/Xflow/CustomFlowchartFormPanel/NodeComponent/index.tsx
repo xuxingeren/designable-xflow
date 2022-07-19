@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { Input, Form, Spin, Button, Select } from 'antd';
 import { NsJsonSchemaForm } from '@antv/xflow';
 import { set } from 'lodash';
+import Header from '../Header';
 import styles from './index.less';
 
 const { Option } = Select;
@@ -19,7 +20,7 @@ const NodeComponent: FC<NodeComponentProps> = (props) => {
   useEffect(() => {
     form.setFieldsValue({
       label: targetData?.label,
-      ...targetData?.attr.attribute,
+      ...targetData?.attrs?.attribute,
     });
     setLoading(false);
   }, [targetData]);
@@ -32,7 +33,7 @@ const NodeComponent: FC<NodeComponentProps> = (props) => {
       if (key === 'label') {
         set(data, key, values[key]);
       } else {
-        set(data.attr.attribute, key, values[key]);
+        set(data.attrs.attribute, key, values[key]);
       }
     });
     updateNode(data);
@@ -40,6 +41,7 @@ const NodeComponent: FC<NodeComponentProps> = (props) => {
 
   return (
     <div className={styles.nodeComponent}>
+      <Header title="节点编辑" />
       <Spin spinning={loading}>
         <Form form={form} onFinish={onFinish}>
           <Form.Item name="label" label="节点名">

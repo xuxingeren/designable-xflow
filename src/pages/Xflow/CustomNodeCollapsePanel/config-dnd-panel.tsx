@@ -34,15 +34,15 @@ const renderNode = (
 
 const nodeList = (arr: any[]) => {
   const newArr = arr.map((s) => {
-    const attr = s.attr;
+    const attrs = s.attrs;
     return {
       popoverContent: () => <div>{s.label}</div>,
       renderKey: s.renderKey || 'CustomNode',
-      renderComponent: (props: any) => renderNode(props, attr.style),
+      renderComponent: (props: any) => renderNode(props, attrs.style),
       label: s.label,
       id: s.id,
-      attr: attr,
-      ...attr.canvansStyle,
+      attrs: attrs,
+      ...attrs.canvansStyle,
     };
   });
   return newArr;
@@ -56,7 +56,7 @@ export const nodeDataService: NsNodeCollapsePanel.INodeDataService =
         id: 1,
         renderKey: 'CustomNode',
         label: '开始',
-        attr: {
+        attrs: {
           attribute: {
             type: 'aaa',
             tag: [1, 2],
@@ -75,7 +75,7 @@ export const nodeDataService: NsNodeCollapsePanel.INodeDataService =
         id: 2,
         renderKey: 'CustomConnecto',
         label: '审核节点',
-        attr: {
+        attrs: {
           attribute: {
             type: 'bbb',
             tag: [2],

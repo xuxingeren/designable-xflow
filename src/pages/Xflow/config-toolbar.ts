@@ -72,8 +72,8 @@ namespace NSToolbarConfig {
     const isNormalNodesSelected =
       await MODELS.IS_NORMAL_NODES_SELECTED.useValue(modelService);
     // undo redo
-    const isUndoable = await MODELS.HISTORY_REDOABLE.useValue(modelService);
-    const isRedoable = await MODELS.HISTORY_UNDOABLE.useValue(modelService);
+    const isUndoable = await MODELS.HISTORY_UNDOABLE.useValue(modelService);
+    const isRedoable = await MODELS.HISTORY_REDOABLE.useValue(modelService);
 
     return {
       isUndoable,
@@ -87,33 +87,33 @@ namespace NSToolbarConfig {
   export const getToolbarItems = async (state: IToolbarState) => {
     const toolbarGroup: IToolbarItemOptions[] = [];
 
-    // /** 撤销 */
-    // toolbarGroup.push({
-    //   tooltip: '撤销',
-    //   iconName: 'UndoOutlined',
-    //   id: TOOLBAR_ITEMS.GRAPH_HISTORY_UNDO,
-    //   isEnabled: state.isUndoable,
-    //   onClick: async ({ commandService }) => {
-    //     commandService.executeCommand<NsGraphCmd.GraphHistoryUndo.IArgs>(
-    //       TOOLBAR_ITEMS.GRAPH_HISTORY_UNDO,
-    //       {},
-    //     );
-    //   },
-    // });
+    /** 撤销 */
+    toolbarGroup.push({
+      tooltip: '撤销',
+      iconName: 'UndoOutlined',
+      id: TOOLBAR_ITEMS.GRAPH_HISTORY_UNDO,
+      isEnabled: state.isUndoable,
+      onClick: async ({ commandService }) => {
+        commandService.executeCommand<NsGraphCmd.GraphHistoryUndo.IArgs>(
+          TOOLBAR_ITEMS.GRAPH_HISTORY_UNDO,
+          {},
+        );
+      },
+    });
 
-    // /** 重做 */
-    // toolbarGroup.push({
-    //   tooltip: '重做',
-    //   iconName: 'RedoOutlined',
-    //   id: TOOLBAR_ITEMS.GRAPH_HISTORY_REDO,
-    //   isEnabled: state.isRedoable,
-    //   onClick: async ({ commandService }) => {
-    //     commandService.executeCommand<NsGraphCmd.GraphHistoryRedo.IArgs>(
-    //       TOOLBAR_ITEMS.GRAPH_HISTORY_REDO,
-    //       {},
-    //     );
-    //   },
-    // });
+    /** 重做 */
+    toolbarGroup.push({
+      tooltip: '重做',
+      iconName: 'RedoOutlined',
+      id: TOOLBAR_ITEMS.GRAPH_HISTORY_REDO,
+      isEnabled: state.isRedoable,
+      onClick: async ({ commandService }) => {
+        commandService.executeCommand<NsGraphCmd.GraphHistoryRedo.IArgs>(
+          TOOLBAR_ITEMS.GRAPH_HISTORY_REDO,
+          {},
+        );
+      },
+    });
 
     /** FRONT_NODE */
     toolbarGroup.push({
