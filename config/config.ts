@@ -5,6 +5,9 @@ export default defineConfig({
     type: 'none',
   },
   layout: {},
+  history: {
+    type: process.env.BUILD_ENV === 'github' ? 'hash' : 'browser',
+  },
   routes: [
     {
       path: '/',
@@ -17,7 +20,8 @@ export default defineConfig({
       component: '@/pages/Xflow',
     },
   ],
-  publicPath: './',
+  base: process.env.BUILD_ENV === 'github' ? '/designable-xflow/dist/' : '/',
+  publicPath: process.env.BUILD_ENV === 'github' ? './' : '/',
   mfsu: {},
   fastRefresh: {},
 });
