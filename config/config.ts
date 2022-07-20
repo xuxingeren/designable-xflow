@@ -20,7 +20,6 @@ export default defineConfig({
       component: '@/pages/Xflow',
     },
   ],
-  base: process.env.BUILD_ENV === 'github' ? '/designable-xflow/dist/' : '/',
   publicPath: process.env.BUILD_ENV === 'github' ? './' : '/',
   mfsu: {},
   fastRefresh: {},
