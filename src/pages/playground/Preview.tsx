@@ -1,9 +1,45 @@
 import { FC, Ref, useEffect, useImperativeHandle, useState } from 'react';
 import { Modal } from 'antd';
-import { FormItem, Input, FormDialog, FormLayout } from '@formily/antd';
+import {
+  FormItem,
+  Input,
+  Form,
+  Submit,
+  ArrayBase,
+  ArrayCards,
+  ArrayCollapse,
+  ArrayItems,
+  ArrayTable,
+  ArrayTabs,
+  BaseItem,
+  Cascader,
+  Checkbox,
+  DatePicker,
+  Editable,
+  FormButtonGroup,
+  FormCollapse,
+  FormGrid,
+  FormTab,
+  GridColumn,
+  NumberPicker,
+  Password,
+  PreviewText,
+  Radio,
+  Reset,
+  Select,
+  SelectTable,
+  Space,
+  Switch,
+  TimePicker,
+  Transfer,
+  TreeSelect,
+  Upload,
+} from '@formily/antd';
+import * as aaa from '@formily/antd';
 import { createSchemaField } from '@formily/react';
 import { LgetItem } from '@/utils/storage';
-
+import { createForm } from '@formily/core';
+console.log(aaa);
 interface PreviewProps {
   previewRef: Ref<{ setVisible: (flag: boolean) => void }>;
   modalConfig: { [key: string]: any };
@@ -11,8 +47,39 @@ interface PreviewProps {
 
 const SchemaField = createSchemaField({
   components: {
-    FormItem,
     Input,
+    ArrayBase,
+    ArrayCards,
+    ArrayCollapse,
+    ArrayItems,
+    ArrayTable,
+    ArrayTabs,
+    BaseItem,
+    Cascader,
+    Checkbox,
+    DatePicker,
+    Editable,
+    Form,
+    FormButtonGroup,
+    FormCollapse,
+    FormGrid,
+    FormItem,
+    FormTab,
+    GridColumn,
+    NumberPicker,
+    Password,
+    PreviewText,
+    Radio,
+    Reset,
+    Select,
+    SelectTable,
+    Space,
+    Submit,
+    Switch,
+    TimePicker,
+    Transfer,
+    TreeSelect,
+    Upload,
   },
 });
 
@@ -23,7 +90,7 @@ const Preview: FC<PreviewProps> = ({ previewRef, modalConfig }) => {
   }));
 
   const [params, setParams] = useState({});
-
+  const normalForm = createForm({});
   useEffect(() => {
     if (modalConfig && visible) {
       const playgroundList = LgetItem('playgroundList') || [];
@@ -31,8 +98,6 @@ const Preview: FC<PreviewProps> = ({ previewRef, modalConfig }) => {
       setParams(data?.params || {});
     }
   }, [modalConfig, visible]);
-
-  const handleOk = () => {};
 
   const handleCancel = () => {
     setVisible(false);
@@ -42,12 +107,13 @@ const Preview: FC<PreviewProps> = ({ previewRef, modalConfig }) => {
     <Modal
       title="模板预览"
       visible={visible}
-      onOk={handleOk}
       onCancel={handleCancel}
+      footer={null}
     >
-      <FormLayout {...params.form}>
+      <Form form={normalForm} onAutoSubmit={console.log} {...params.form}>
         <SchemaField schema={params.schema} />
-      </FormLayout>
+        <Submit block>保存</Submit>
+      </Form>
     </Modal>
   );
 };
