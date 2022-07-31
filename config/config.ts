@@ -36,6 +36,7 @@ export default defineConfig({
     },
   ],
   publicPath: process.env.BUILD_ENV === 'github' ? './' : '/',
+  hash: true,
   mfsu: {},
   fastRefresh: {},
 });
