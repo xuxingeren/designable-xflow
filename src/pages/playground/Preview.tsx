@@ -1,5 +1,6 @@
 import { FC, Ref, useEffect, useImperativeHandle, useState } from 'react';
 import { Modal } from 'antd';
+import { request } from 'umi';
 import {
   FormItem,
   Input,
@@ -35,11 +36,10 @@ import {
   TreeSelect,
   Upload,
 } from '@formily/antd';
-import * as aaa from '@formily/antd';
 import { createSchemaField } from '@formily/react';
 import { LgetItem } from '@/utils/storage';
 import { createForm } from '@formily/core';
-console.log(aaa);
+
 interface PreviewProps {
   previewRef: Ref<{ setVisible: (flag: boolean) => void }>;
   modalConfig: { [key: string]: any };
@@ -81,6 +81,9 @@ const SchemaField = createSchemaField({
     TreeSelect,
     Upload,
   },
+  scope: {
+    $fetch: request,
+  },
 });
 
 const Preview: FC<PreviewProps> = ({ previewRef, modalConfig }) => {
@@ -97,6 +100,13 @@ const Preview: FC<PreviewProps> = ({ previewRef, modalConfig }) => {
       const data = playgroundList.find((s) => s.id === modalConfig.id);
       setParams(data?.params || {});
     }
+    request('/api/users', {
+      params: {
+        id: 1,
+      },
+    }).then((res) => {
+      console.log(res);
+    });
   }, [modalConfig, visible]);
 
   const handleCancel = () => {

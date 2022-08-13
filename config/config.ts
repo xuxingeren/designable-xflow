@@ -17,7 +17,7 @@ export default defineConfig({
       name: '流程可视化',
       path: '/xflow',
       icon: 'SmileOutlined',
-      component: '@/pages/Xflow',
+      component: '@/pages/xflow',
     },
     {
       name: '表单模板',
