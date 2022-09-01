@@ -3,6 +3,7 @@
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
+    "build:github": "cross-env BUILD_ENV=github umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
@@ -20,8 +21,10 @@
     ]
   },
   "dependencies": {
+    "@ant-design/pro-components": "^1.1.14",
     "@ant-design/pro-layout": "^6.5.0",
     "@antv/xflow": "^1.0.48",
+    "@designable/formily-antd": "^1.0.0-beta.45",
     "@formily/antd": "^2.1.9",
     "@formily/core": "^2.1.9",
     "@formily/react": "^2.1.9",
@@ -37,6 +40,7 @@
     "@types/webpack-env": "^1.17.0",
     "@umijs/preset-react": "1.x",
     "@umijs/test": "^3.5.26",
+    "cross-env": "^7.0.3",
     "lint-staged": "^10.0.7",
     "prettier": "^2.2.0",
     "typescript": "^4.1.2",
