@@ -1,0 +1,20 @@
+.nodeComponent {
+  height: 100%;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  :global {
+    .formBox {
+      flex: 1;
+      overflow: auto;
+      padding-bottom: 16px;
+      box-sizing: border-box;
+    }
+    .delBtn {
+      flex: 0 0 40px;
+      height: 40px;
+      margin-bottom: 16px;
+    }
+  }
+}
