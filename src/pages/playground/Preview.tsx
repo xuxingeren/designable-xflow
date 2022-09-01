@@ -1,42 +1,8 @@
 import { FC, Ref, useEffect, useImperativeHandle, useState } from 'react';
 import { Modal } from 'antd';
 import { request } from 'umi';
-import {
-  FormItem,
-  Input,
-  Form,
-  Submit,
-  ArrayBase,
-  ArrayCards,
-  ArrayCollapse,
-  ArrayItems,
-  ArrayTable,
-  ArrayTabs,
-  BaseItem,
-  Cascader,
-  Checkbox,
-  DatePicker,
-  Editable,
-  FormButtonGroup,
-  FormCollapse,
-  FormGrid,
-  FormTab,
-  GridColumn,
-  NumberPicker,
-  Password,
-  PreviewText,
-  Radio,
-  Reset,
-  Select,
-  SelectTable,
-  Space,
-  Switch,
-  TimePicker,
-  Transfer,
-  TreeSelect,
-  Upload,
-} from '@formily/antd';
-import { createSchemaField } from '@formily/react';
+import { Form, Submit } from '@formily/antd';
+import tempSchemaField from '@/pages/playground/temp-schemaField';
 import { LgetItem } from '@/utils/storage';
 import { createForm } from '@formily/core';
 
@@ -45,59 +11,23 @@ interface PreviewProps {
   modalConfig: { [key: string]: any };
 }
 
-const SchemaField = createSchemaField({
-  components: {
-    Input,
-    ArrayBase,
-    ArrayCards,
-    ArrayCollapse,
-    ArrayItems,
-    ArrayTable,
-    ArrayTabs,
-    BaseItem,
-    Cascader,
-    Checkbox,
-    DatePicker,
-    Editable,
-    Form,
-    FormButtonGroup,
-    FormCollapse,
-    FormGrid,
-    FormItem,
-    FormTab,
-    GridColumn,
-    NumberPicker,
-    Password,
-    PreviewText,
-    Radio,
-    Reset,
-    Select,
-    SelectTable,
-    Space,
-    Submit,
-    Switch,
-    TimePicker,
-    Transfer,
-    TreeSelect,
-    Upload,
-  },
-  scope: {
-    $fetch: request,
-  },
-});
-
 const Preview: FC<PreviewProps> = ({ previewRef, modalConfig }) => {
   const [visible, setVisible] = useState(false);
+  const [params, setParams] = useState<{ [key: string]: any }>({});
+  const normalForm = createForm({});
+  const SchemaField = tempSchemaField({
+    $fetch: request,
+  });
+
   useImperativeHandle(previewRef, () => ({
     setVisible,
   }));
-
-  const [params, setParams] = useState({});
-  const normalForm = createForm({});
   useEffect(() => {
     if (modalConfig && visible) {
       const playgroundList = LgetItem('playgroundList') || [];
-      const data = playgroundList.find((s) => s.id === modalConfig.id);
+      const data = playgroundList.find(
+        (s: { id: string }) => s.id === modalConfig.id,
+      );
       setParams(data?.params || {});
     }
     request('/api/users', {
@@ -112,7 +42,6 @@ const Preview: FC<PreviewProps> = ({ previewRef, modalConfig }) => {
   const handleCancel = () => {
     setVisible(false);
   };
-
   return (
     <Modal
       title="模板预览"

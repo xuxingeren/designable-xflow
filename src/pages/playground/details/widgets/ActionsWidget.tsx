@@ -20,10 +20,11 @@ export const ActionsWidget = observer(() => {
   }, []);
   return (
     <Space style={{ marginRight: 10 }}>
-      <Button href="https://designable-fusion.formilyjs.org">
-        Alibaba Fusion
-      </Button>
-      <Button href="https://github.com/alibaba/designable" target="_blank">
+      <Button href="https://xuxin123.com">陌路凡歌</Button>
+      <Button
+        href="https://github.com/xuxingeren/designable-xflow"
+        target="_blank"
+      >
         <GithubOutlined />
         Github
       </Button>

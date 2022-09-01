@@ -1,27 +1,39 @@
-import { NsJsonSchemaForm } from '@antv/xflow';
-import { Input, Button, Form, Spin } from 'antd';
-import { set } from 'lodash';
 import { FC, useEffect, useState } from 'react';
+import { Empty, Button } from 'antd';
+import { useXFlowApp, NsJsonSchemaForm } from '@antv/xflow';
+import { Form, Submit } from '@formily/antd';
+import { createForm } from '@formily/core';
+import { set } from 'lodash';
+import { request } from 'umi';
+import tempSchemaField from '@/pages/playground/temp-schemaField';
 import Header from '../Header';
 import styles from './index.less';
+import { LgetItem } from '@/utils/storage';
+
 interface EdgeComponentProps {
   updateEdge: any;
   targetData: NsJsonSchemaForm.TargetData;
+  readOnly?: boolean;
 }
 
 const EdgeComponent: FC<EdgeComponentProps> = (props) => {
-  const { updateEdge, targetData } = props;
-  const [loading, setLoading] = useState(true);
-  const [form] = Form.useForm();
+  const [formilySchema, setFormilySchema] = useState<{ [key: string]: any }>(
+    {},
+  );
+  const { updateEdge, targetData, readOnly = false } = props;
+  const SchemaField = tempSchemaField({
+    $fetch: request,
+  });
 
-  useEffect(() => {
-    form.setFieldsValue({
-      ...targetData?.attrs?.attribute,
-    });
-    setLoading(false);
-  }, [targetData]);
+  const xflowApp = useXFlowApp();
 
-  const onFinish = (values: any) => {
+  const form = createForm({
+    values: targetData!.attrs ?? {},
+    readOnly,
+  });
+
+  const onFinish = async (values: any) => {
+    const grap = await xflowApp.getGraphInstance();
     const data: any = {
       ...targetData,
     };
@@ -32,24 +44,45 @@ const EdgeComponent: FC<EdgeComponentProps> = (props) => {
       set(data.attrs.attribute, key, values[key]);
     });
     updateEdge(data);
+    grap.resetSelection();
   };
+
+  const delBtn = async () => {
+    const grap = await xflowApp.getGraphInstance();
+    grap.removeEdge(targetData!.id);
+  };
+
+  useEffect(() => {
+    // 这里用接口获取节点id关联的表单模板，我简写了
+    const playgroundList = LgetItem('playgroundList') || [];
+    setFormilySchema(playgroundList[0]?.params ?? {});
+  }, []);
+
+  const { form: formProps, schema } = formilySchema;
 
   return (
     <div className={styles.edgeComponent}>
       <Header title="连线编辑" />
-      <Spin spinning={loading}>
-        <Form form={form} onFinish={onFinish}>
-          <Form.Item name="key" label="key">
-            <Input />
-          </Form.Item>
-          <Form.Item name="value" label="value">
-            <Input />
-          </Form.Item>
-          <Button type="primary" htmlType="submit">
-            保存
+      <div className="formBox">
+        {schema && Object.keys(schema)?.length ? (
+          <Form {...formProps} form={form} onAutoSubmit={onFinish}>
+            <SchemaField schema={schema} />
+            {readOnly ? null : <Submit block>保存</Submit>}
+          </Form>
+        ) : (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="无表单模板"
+          />
+        )}
+      </div>
+      {readOnly ? null : (
+        <div className="delBtn">
+          <Button size="large" block danger onClick={delBtn}>
+            删除连线
           </Button>
-        </Form>
-      </Spin>
+        </div>
+      )}
     </div>
   );
 };

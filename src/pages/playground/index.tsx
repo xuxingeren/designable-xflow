@@ -80,7 +80,7 @@ const Playground: FC = () => {
     const playgroundList = LgetItem('playgroundList') || [];
     LsetItem(
       'playgroundList',
-      playgroundList.filter((s) => s.id !== record.id),
+      playgroundList.filter((s: { id: string }) => s.id !== record.id),
     );
     actionRef.current?.reload();
   };
